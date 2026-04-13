@@ -15,129 +15,208 @@
       --paper: #fffdf8;
       --line: rgba(60, 84, 120, 0.14);
       --ink: #272220;
-      --muted: #7b6f68;
-      --shadow: 0 10px 30px rgba(0,0,0,0.10);
-      --radius: 22px;
-      --toolbar-bg: rgba(255,255,255,0.82);
+      --muted: #786d66;
       --border: rgba(0,0,0,0.08);
+      --shadow: 0 12px 30px rgba(0,0,0,0.10);
+      --radius: 22px;
+      --sidebar-bg: rgba(255,255,255,0.82);
+      --note-width: 260px;
+      --note-height: 150px;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     html, body {
       margin: 0;
       padding: 0;
       min-height: 100%;
+      font-family: "Caveat", cursive;
       background:
         radial-gradient(circle at top left, #f8f1d9 0%, transparent 30%),
         radial-gradient(circle at bottom right, #e4f1ff 0%, transparent 25%),
         var(--bg);
       color: var(--ink);
-      font-family: "Caveat", cursive;
       overflow: hidden;
       touch-action: none;
     }
 
+    button, input, select, textarea {
+      font: inherit;
+    }
+
     .app {
-      display: grid;
-      grid-template-columns: 320px 1fr;
       height: 100vh;
-      gap: 18px;
-      padding: 18px;
+      display: grid;
+      grid-template-rows: 68px 1fr;
     }
 
-    .sidebar {
-      background: var(--toolbar-bg);
-      backdrop-filter: blur(12px);
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 14px;
+      background: rgba(255,255,255,0.72);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .top-left, .top-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .top-title {
+      font-size: 1.55rem;
+      font-weight: 700;
+      margin-right: 8px;
+      white-space: nowrap;
+    }
+
+    .toolbar-btn, .status-pill, .small-btn {
       border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 18px;
-      overflow: auto;
+      background: white;
+      border-radius: 14px;
+      padding: 8px 12px;
+      color: var(--ink);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     }
 
-    .sidebar h1 {
-      margin: 0 0 6px;
-      font-size: 2.2rem;
-      line-height: 1;
+    .toolbar-btn, .small-btn {
+      cursor: pointer;
     }
 
-    .sidebar p {
-      margin: 0 0 18px;
-      color: var(--muted);
-      font-size: 1.2rem;
-      line-height: 1.1;
+    .toolbar-btn:disabled, .small-btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .status-pill {
+      min-width: 112px;
+      text-align: center;
+      background: #fffdfc;
+    }
+
+    .status-saving { background: #fff1bf; }
+    .status-saved { background: #dff5df; }
+    .status-unsaved { background: #ffdede; }
+
+    .main {
+      display: grid;
+      grid-template-columns: 320px 1fr 340px;
+      gap: 14px;
+      padding: 14px;
+      min-height: 0;
     }
 
     .panel {
-      margin-bottom: 18px;
-      padding: 14px;
+      background: var(--sidebar-bg);
+      backdrop-filter: blur(10px);
       border: 1px solid var(--border);
-      border-radius: 18px;
-      background: rgba(255,255,255,0.65);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px;
+      overflow: auto;
+      min-height: 0;
     }
 
     .panel h2 {
       margin: 0 0 10px;
-      font-size: 1.5rem;
+      font-size: 1.6rem;
       line-height: 1;
     }
 
-    .controls {
+    .panel h3 {
+      margin: 12px 0 8px;
+      font-size: 1.25rem;
+      line-height: 1;
+      color: #4f463f;
+    }
+
+    .stack {
       display: grid;
       gap: 10px;
     }
 
     label {
       display: block;
-      font-size: 1.05rem;
       margin-bottom: 4px;
-      color: #5d514a;
+      font-size: 1.05rem;
+      color: #5a5049;
     }
 
-    select, input[type="color"], button {
+    input[type="text"], select, textarea {
       width: 100%;
       border: 1px solid var(--border);
       border-radius: 14px;
       padding: 10px 12px;
-      font: inherit;
-      font-size: 1.15rem;
       background: #fff;
       color: var(--ink);
+      font-size: 1.15rem;
     }
 
-    button {
+    textarea {
+      min-height: 180px;
+      resize: vertical;
+      line-height: 1.15;
+    }
+
+    .btn {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 10px 12px;
+      background: #fff;
       cursor: pointer;
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
-      box-shadow: 0 6px 14px rgba(0,0,0,0.06);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     }
 
-    button:hover {
-      transform: translateY(-1px);
+    .btn.primary { background: #f8dc7d; }
+    .btn.secondary { background: #e5efff; }
+    .btn.danger { background: #ffd8d8; }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
     }
 
-    button.primary {
-      background: #f8dc7d;
+    .project-list, .clipboard-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 8px;
     }
 
-    button.secondary {
-      background: #e5efff;
+    .project-item, .clip-item {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: rgba(255,255,255,0.8);
+      padding: 10px 12px;
     }
 
-    button.danger {
-      background: #ffd8d8;
+    .project-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
     }
 
-    .hint {
-      color: var(--muted);
-      font-size: 1rem;
-      line-height: 1.1;
+    .project-name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 1.15rem;
+    }
+
+    .project-item.active {
+      outline: 2px solid rgba(77, 130, 255, 0.28);
+      background: #edf4ff;
     }
 
     .workspace-shell {
       min-width: 0;
+      min-height: 0;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -157,8 +236,8 @@
           var(--line) 34px 35px
         ),
         var(--paper);
+      border: 1px solid var(--border);
       border-radius: 28px;
-      border: 1px solid rgba(0,0,0,0.08);
       box-shadow: var(--shadow);
       overflow: hidden;
     }
@@ -174,128 +253,235 @@
 
     .note-block {
       position: absolute;
-      min-width: 120px;
-      max-width: min(78vw, 520px);
-      padding: 10px 14px;
-      border-radius: 12px;
+      width: var(--note-width);
+      height: var(--note-height);
+      padding: 12px 14px;
+      border-radius: 16px;
+      overflow: hidden;
       cursor: grab;
       user-select: none;
       -webkit-user-select: none;
       touch-action: none;
+      background: rgba(255,255,255,0.18);
       transition: box-shadow 0.18s ease;
-      outline: none;
     }
 
     .note-block.selected {
-      box-shadow: 0 0 0 2px rgba(60,110,255,0.25), 0 10px 18px rgba(0,0,0,0.08);
+      box-shadow: 0 0 0 2px rgba(70,110,255,0.26), 0 12px 18px rgba(0,0,0,0.08);
     }
 
     .note-block.dragging {
       cursor: grabbing;
-      box-shadow: 0 18px 24px rgba(0,0,0,0.14);
       z-index: 999;
+      box-shadow: 0 18px 26px rgba(0,0,0,0.15);
     }
 
-    .note-block .text {
-      position: relative;
-      z-index: 1;
-      display: inline;
+    .note-text {
+      width: 100%;
+      height: 100%;
       outline: none;
       white-space: pre-wrap;
       word-break: break-word;
+      overflow: auto;
+      line-height: 1.1;
     }
 
-    .note-block.highlight-yellow .text,
-    .note-block.highlight-pink .text,
-    .note-block.highlight-blue .text,
-    .note-block.highlight-green .text,
-    .note-block.highlight-purple .text {
+    .style-title .note-text {
+      font-size: 2rem;
+      font-weight: 700;
+    }
+
+    .style-heading .note-text {
+      font-size: 1.6rem;
+      font-weight: 600;
+    }
+
+    .style-body .note-text {
+      font-size: 1.35rem;
+      font-weight: 500;
+    }
+
+    .style-small .note-text {
+      font-size: 1.05rem;
+      font-weight: 400;
+      color: rgba(39, 34, 32, 0.68);
+    }
+
+    .highlight-yellow .note-text {
+      background: rgba(255,233,117,0.78);
       box-decoration-break: clone;
       -webkit-box-decoration-break: clone;
       padding: 0 4px;
       border-radius: 8px;
     }
 
-    .note-block.highlight-yellow .text { background: rgba(255, 233, 117, 0.78); }
-    .note-block.highlight-pink .text   { background: rgba(255, 175, 206, 0.75); }
-    .note-block.highlight-blue .text   { background: rgba(163, 214, 255, 0.75); }
-    .note-block.highlight-green .text  { background: rgba(177, 244, 186, 0.75); }
-    .note-block.highlight-purple .text { background: rgba(213, 191, 255, 0.75); }
-
-    .style-title .text {
-      font-size: clamp(2rem, 2.8vw, 3.2rem);
-      font-weight: 700;
-      line-height: 1;
+    .highlight-pink .note-text {
+      background: rgba(255,175,206,0.75);
+      box-decoration-break: clone;
+      -webkit-box-decoration-break: clone;
+      padding: 0 4px;
+      border-radius: 8px;
     }
 
-    .style-heading .text {
-      font-size: clamp(1.6rem, 2.3vw, 2.3rem);
-      font-weight: 600;
-      line-height: 1.05;
+    .highlight-blue .note-text {
+      background: rgba(163,214,255,0.75);
+      box-decoration-break: clone;
+      -webkit-box-decoration-break: clone;
+      padding: 0 4px;
+      border-radius: 8px;
     }
 
-    .style-body .text {
-      font-size: clamp(1.25rem, 1.8vw, 1.7rem);
-      font-weight: 500;
-      line-height: 1.15;
+    .highlight-green .note-text {
+      background: rgba(177,244,186,0.75);
+      box-decoration-break: clone;
+      -webkit-box-decoration-break: clone;
+      padding: 0 4px;
+      border-radius: 8px;
     }
 
-    .style-small .text {
-      font-size: clamp(1rem, 1.4vw, 1.3rem);
-      font-weight: 400;
-      color: rgba(39, 34, 32, 0.68);
+    .highlight-purple .note-text {
+      background: rgba(213,191,255,0.75);
+      box-decoration-break: clone;
+      -webkit-box-decoration-break: clone;
+      padding: 0 4px;
+      border-radius: 8px;
+    }
+
+    .help {
+      color: var(--muted);
+      font-size: 1rem;
       line-height: 1.1;
     }
 
-    .footer-note {
-      margin-top: 8px;
-      font-size: 1rem;
-      color: var(--muted);
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.28);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 5000;
     }
 
-    @media (max-width: 900px) {
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal {
+      width: min(100%, 560px);
+      max-height: 80vh;
+      overflow: auto;
+      background: #fffdfb;
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.22);
+      padding: 18px;
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .modal-header h2 {
+      margin: 0;
+      font-size: 1.6rem;
+    }
+
+    .clip-meta {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-top: 4px;
+      font-family: system-ui, sans-serif;
+    }
+
+    .clip-preview {
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-size: 1.15rem;
+    }
+
+    @media (max-width: 1100px) {
+      .main {
+        grid-template-columns: 290px 1fr;
+        grid-template-rows: 1fr auto;
+      }
+
+      .editor-panel {
+        grid-column: 1 / -1;
+      }
+    }
+
+    @media (max-width: 760px) {
       .app {
-        grid-template-columns: 1fr;
         grid-template-rows: auto 1fr;
-        height: 100dvh;
+      }
+
+      .topbar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .top-left, .top-right {
+        flex-wrap: wrap;
+      }
+
+      .main {
+        grid-template-columns: 1fr;
         padding: 10px;
-        gap: 10px;
-      }
-
-      .sidebar {
-        padding: 14px;
-        border-radius: 18px;
-      }
-
-      .sidebar h1 {
-        font-size: 1.9rem;
-      }
-
-      .sidebar p {
-        font-size: 1.05rem;
       }
 
       .page {
         width: 100%;
-        min-height: 100%;
-        border-radius: 22px;
+        min-height: 78vh;
       }
 
       .note-block {
-        max-width: 78%;
+        width: 220px;
+        height: 140px;
       }
     }
   </style>
 </head>
 <body>
   <div class="app">
-    <aside class="sidebar">
-      <h1>Study Notes</h1>
-      <p>Create handwritten note sections and drag them anywhere on the page.</p>
+    <header class="topbar">
+      <div class="top-left">
+        <div class="top-title">Study Notes</div>
+        <button class="toolbar-btn" id="undoBtn">← Back</button>
+        <button class="toolbar-btn" id="redoBtn">→ Forward</button>
+        <button class="toolbar-btn" id="copyBtn">Copy</button>
+        <button class="toolbar-btn" id="cutBtn">Cut</button>
+        <button class="toolbar-btn" id="pasteBtn">Paste</button>
+        <button class="toolbar-btn" id="clipboardBtn">Clipboard</button>
+      </div>
 
-      <div class="panel">
-        <h2>Add a new section</h2>
-        <div class="controls">
+      <div class="top-right">
+        <div class="status-pill status-saved" id="saveStatus">Saved</div>
+      </div>
+    </header>
+
+    <div class="main">
+      <aside class="panel">
+        <h2>Projects</h2>
+
+        <div class="stack">
+          <div>
+            <label for="projectNameInput">New project name</label>
+            <input id="projectNameInput" type="text" placeholder="My notes project" />
+          </div>
+          <button class="btn primary" id="createProjectBtn">Create project</button>
+        </div>
+
+        <h3>Open project</h3>
+        <div class="project-list" id="projectList"></div>
+
+        <h3>Add note</h3>
+        <div class="stack">
           <div>
             <label for="styleSelect">Text style</label>
             <select id="styleSelect">
@@ -319,148 +505,528 @@
           </div>
 
           <div>
-            <label for="textColor">Text color</label>
-            <input id="textColor" type="color" value="#272220" />
+            <label for="textColorInput">Text color</label>
+            <input id="textColorInput" type="text" value="#272220" />
           </div>
 
-          <button class="primary" id="addBlockBtn">Add text section</button>
+          <button class="btn secondary" id="addNoteBtn">Add note card</button>
+          <button class="btn danger" id="deleteNoteBtn">Delete selected</button>
         </div>
-      </div>
 
-      <div class="panel">
-        <h2>Edit selected section</h2>
-        <div class="controls">
-          <button class="secondary" id="applyStyleBtn">Apply selected style + highlight</button>
-          <button class="danger" id="deleteBlockBtn">Delete selected section</button>
+        <h3>Shortcuts</h3>
+        <div class="help">
+          Cmd/Ctrl+Z = undo<br>
+          Cmd/Ctrl+Shift+Z = redo<br>
+          Cmd/Ctrl+C = copy<br>
+          Cmd/Ctrl+V = paste<br>
+          Cmd/Ctrl+Shift+V = clipboard history
         </div>
-        <div class="footer-note">Tap or click a note to select it. Double tap or double click text to edit.</div>
-      </div>
+      </aside>
 
-      <div class="panel">
-        <h2>Use</h2>
-        <div class="hint">
-          Drag notes around the page.<br>
-          Edit text directly inside each note.<br>
-          Works with mouse, touch, and stylus.
+      <main class="workspace-shell">
+        <section class="page" id="page"></section>
+      </main>
+
+      <aside class="panel editor-panel">
+        <h2>Selected Note</h2>
+
+        <div class="stack">
+          <div>
+            <label for="sideTextEditor">Edit text</label>
+            <textarea id="sideTextEditor" placeholder="Select a note to edit it here"></textarea>
+          </div>
+
+          <div class="row">
+            <div>
+              <label for="sideStyleSelect">Style</label>
+              <select id="sideStyleSelect">
+                <option value="title">Title</option>
+                <option value="heading">Heading</option>
+                <option value="body">Regular text</option>
+                <option value="small">Small / lighter</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="sideHighlightSelect">Highlight</label>
+              <select id="sideHighlightSelect">
+                <option value="none">None</option>
+                <option value="yellow">Yellow</option>
+                <option value="pink">Pink</option>
+                <option value="blue">Blue</option>
+                <option value="green">Green</option>
+                <option value="purple">Purple</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label for="sideColorInput">Text color</label>
+            <input id="sideColorInput" type="text" value="#272220" />
+          </div>
+
+          <button class="btn primary" id="applyChangesBtn">Apply changes</button>
         </div>
-      </div>
-    </aside>
 
-    <main class="workspace-shell">
-      <section class="page" id="page"></section>
-    </main>
+        <h3>Note</h3>
+        <div class="help">
+          You can edit from here or double click a note on the page. All note cards stay the same size.
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="clipboardModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Clipboard History</h2>
+        <button class="small-btn" id="closeClipboardBtn">Close</button>
+      </div>
+      <div class="clipboard-list" id="clipboardList"></div>
+    </div>
   </div>
 
   <script>
+    const STORAGE_KEY = "study-notes-projects-v2";
+    const ACTIVE_PROJECT_KEY = "study-notes-active-project-v2";
+    const CLIPBOARD_KEY = "study-notes-clipboard-v2";
+
     const page = document.getElementById("page");
-    const addBlockBtn = document.getElementById("addBlockBtn");
-    const deleteBlockBtn = document.getElementById("deleteBlockBtn");
-    const applyStyleBtn = document.getElementById("applyStyleBtn");
+    const projectNameInput = document.getElementById("projectNameInput");
+    const createProjectBtn = document.getElementById("createProjectBtn");
+    const projectList = document.getElementById("projectList");
+
+    const addNoteBtn = document.getElementById("addNoteBtn");
+    const deleteNoteBtn = document.getElementById("deleteNoteBtn");
+
     const styleSelect = document.getElementById("styleSelect");
     const highlightSelect = document.getElementById("highlightSelect");
-    const textColorInput = document.getElementById("textColor");
+    const textColorInput = document.getElementById("textColorInput");
 
-    let selectedBlock = null;
-    let zCounter = 10;
+    const sideTextEditor = document.getElementById("sideTextEditor");
+    const sideStyleSelect = document.getElementById("sideStyleSelect");
+    const sideHighlightSelect = document.getElementById("sideHighlightSelect");
+    const sideColorInput = document.getElementById("sideColorInput");
+    const applyChangesBtn = document.getElementById("applyChangesBtn");
 
-    function createBlock({
-      x = 120,
-      y = 100,
-      text = "Write your note here",
-      style = "body",
-      highlight = "yellow",
-      color = "#272220"
-    } = {}) {
-      const block = document.createElement("div");
-      block.className = `note-block style-${style} ${highlight !== "none" ? `highlight-${highlight}` : ""}`;
-      block.style.left = `${x}px`;
-      block.style.top = `${y}px`;
-      block.style.color = color;
-      block.style.zIndex = ++zCounter;
-      block.tabIndex = 0;
+    const undoBtn = document.getElementById("undoBtn");
+    const redoBtn = document.getElementById("redoBtn");
+    const copyBtn = document.getElementById("copyBtn");
+    const cutBtn = document.getElementById("cutBtn");
+    const pasteBtn = document.getElementById("pasteBtn");
+    const clipboardBtn = document.getElementById("clipboardBtn");
+    const saveStatus = document.getElementById("saveStatus");
 
-      const textEl = document.createElement("div");
-      textEl.className = "text";
-      textEl.contentEditable = "false";
-      textEl.spellcheck = false;
-      textEl.innerText = text;
+    const clipboardModal = document.getElementById("clipboardModal");
+    const clipboardList = document.getElementById("clipboardList");
+    const closeClipboardBtn = document.getElementById("closeClipboardBtn");
 
-      block.appendChild(textEl);
-      page.appendChild(block);
+    let projects = loadProjects();
+    let clipboardHistory = loadClipboardHistory();
+    let activeProjectId = localStorage.getItem(ACTIVE_PROJECT_KEY);
+    let selectedNoteId = null;
+    let noteElements = new Map();
 
-      attachBlockEvents(block, textEl);
-      selectBlock(block);
-      return block;
+    let typingTimer = null;
+    let isTyping = false;
+    let suspendHistory = false;
+
+    function uid(prefix = "id") {
+      return prefix + "-" + Math.random().toString(36).slice(2, 10);
     }
 
-    function selectBlock(block) {
-      document.querySelectorAll(".note-block").forEach(el => el.classList.remove("selected"));
-      selectedBlock = block;
-      if (block) {
-        block.classList.add("selected");
-        block.style.zIndex = ++zCounter;
+    function defaultProject(name = "My Project") {
+      return {
+        id: uid("project"),
+        name,
+        notes: [],
+        history: [],
+        historyIndex: -1,
+        updatedAt: Date.now()
+      };
+    }
 
-        if (block.classList.contains("style-title")) styleSelect.value = "title";
-        else if (block.classList.contains("style-heading")) styleSelect.value = "heading";
-        else if (block.classList.contains("style-small")) styleSelect.value = "small";
-        else styleSelect.value = "body";
+    function defaultStarterNotes() {
+      return [
+        {
+          id: uid("note"),
+          x: 110,
+          y: 80,
+          text: "Biology Notes",
+          style: "title",
+          highlight: "none",
+          color: "#272220"
+        },
+        {
+          id: uid("note"),
+          x: 120,
+          y: 200,
+          text: "Cell Structure",
+          style: "heading",
+          highlight: "yellow",
+          color: "#272220"
+        },
+        {
+          id: uid("note"),
+          x: 140,
+          y: 310,
+          text: "The nucleus controls the cell and contains genetic material.",
+          style: "body",
+          highlight: "green",
+          color: "#272220"
+        }
+      ];
+    }
 
-        const highlightClasses = ["yellow", "pink", "blue", "green", "purple"];
-        const currentHighlight = highlightClasses.find(c => block.classList.contains(`highlight-${c}`));
-        highlightSelect.value = currentHighlight || "none";
-
-        const computed = rgbToHex(getComputedStyle(block).color);
-        if (computed) textColorInput.value = computed;
+    function loadProjects() {
+      try {
+        const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+        return Array.isArray(parsed) ? parsed : [];
+      } catch {
+        return [];
       }
     }
 
-    function rgbToHex(rgb) {
-      const match = rgb.match(/\d+/g);
-      if (!match || match.length < 3) return null;
-      return "#" + match.slice(0, 3).map(v => Number(v).toString(16).padStart(2, "0")).join("");
+    function saveProjects() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(projects));
     }
 
-    function applyStyle(block) {
-      if (!block) return;
+    function loadClipboardHistory() {
+      try {
+        const parsed = JSON.parse(localStorage.getItem(CLIPBOARD_KEY) || "[]");
+        return Array.isArray(parsed) ? parsed : [];
+      } catch {
+        return [];
+      }
+    }
 
-      block.classList.remove("style-title", "style-heading", "style-body", "style-small");
-      block.classList.add(`style-${styleSelect.value}`);
+    function saveClipboardHistory() {
+      localStorage.setItem(CLIPBOARD_KEY, JSON.stringify(clipboardHistory.slice(0, 30)));
+    }
 
-      ["yellow", "pink", "blue", "green", "purple"].forEach(c => {
-        block.classList.remove(`highlight-${c}`);
+    function getActiveProject() {
+      return projects.find(p => p.id === activeProjectId) || null;
+    }
+
+    function ensureProject() {
+      if (!projects.length) {
+        const p = defaultProject("My First Notes");
+        p.notes = defaultStarterNotes();
+        projects.push(p);
+        initHistoryForProject(p);
+        activeProjectId = p.id;
+        localStorage.setItem(ACTIVE_PROJECT_KEY, activeProjectId);
+        saveProjects();
+      }
+
+      if (!projects.some(p => p.id === activeProjectId)) {
+        activeProjectId = projects[0].id;
+        localStorage.setItem(ACTIVE_PROJECT_KEY, activeProjectId);
+      }
+
+      const project = getActiveProject();
+      if (project && (!Array.isArray(project.history) || typeof project.historyIndex !== "number")) {
+        initHistoryForProject(project);
+      }
+    }
+
+    function initHistoryForProject(project) {
+      project.history = [snapshotNotes(project.notes)];
+      project.historyIndex = 0;
+    }
+
+    function snapshotNotes(notes) {
+      return JSON.parse(JSON.stringify(notes));
+    }
+
+    function setSaveStatus(state, text) {
+      saveStatus.classList.remove("status-saving", "status-saved", "status-unsaved");
+      saveStatus.classList.add(
+        state === "saving" ? "status-saving" :
+        state === "saved" ? "status-saved" :
+        "status-unsaved"
+      );
+      saveStatus.textContent = text;
+    }
+
+    function scheduleSave() {
+      isTyping = true;
+      setSaveStatus("saving", "Saving...");
+      clearTimeout(typingTimer);
+      typingTimer = setTimeout(() => {
+        isTyping = false;
+        persistCurrentProject();
+        setSaveStatus("saved", "Saved");
+      }, 1000);
+    }
+
+    function persistCurrentProject() {
+      const project = getActiveProject();
+      if (!project) return;
+      project.updatedAt = Date.now();
+      saveProjects();
+    }
+
+    function commitHistory() {
+      if (suspendHistory) return;
+      const project = getActiveProject();
+      if (!project) return;
+
+      const current = snapshotNotes(project.notes);
+      const last = project.history[project.historyIndex];
+      if (JSON.stringify(last) === JSON.stringify(current)) {
+        persistCurrentProject();
+        return;
+      }
+
+      project.history = project.history.slice(0, project.historyIndex + 1);
+      project.history.push(current);
+      if (project.history.length > 100) {
+        project.history.shift();
+      } else {
+        project.historyIndex++;
+      }
+      if (project.history.length === 100 && project.historyIndex >= 99) {
+        project.historyIndex = 99;
+      }
+
+      scheduleSave();
+      updateUndoRedoButtons();
+    }
+
+    function updateUndoRedoButtons() {
+      const project = getActiveProject();
+      if (!project) return;
+      undoBtn.disabled = project.historyIndex <= 0;
+      redoBtn.disabled = project.historyIndex >= project.history.length - 1;
+    }
+
+    function undo() {
+      const project = getActiveProject();
+      if (!project || project.historyIndex <= 0) return;
+      project.historyIndex--;
+      restoreFromHistory(project);
+    }
+
+    function redo() {
+      const project = getActiveProject();
+      if (!project || project.historyIndex >= project.history.length - 1) return;
+      project.historyIndex++;
+      restoreFromHistory(project);
+    }
+
+    function restoreFromHistory(project) {
+      suspendHistory = true;
+      project.notes = snapshotNotes(project.history[project.historyIndex]);
+      renderNotes();
+      persistCurrentProject();
+      setSaveStatus("saved", "Saved");
+      suspendHistory = false;
+      updateUndoRedoButtons();
+    }
+
+    function renderProjectList() {
+      projectList.innerHTML = "";
+      projects.forEach(project => {
+        const item = document.createElement("div");
+        item.className = "project-item" + (project.id === activeProjectId ? " active" : "");
+
+        const name = document.createElement("div");
+        name.className = "project-name";
+        name.textContent = project.name;
+
+        const btnWrap = document.createElement("div");
+        btnWrap.style.display = "flex";
+        btnWrap.style.gap = "6px";
+
+        const openBtn = document.createElement("button");
+        openBtn.className = "small-btn";
+        openBtn.textContent = "Open";
+        openBtn.addEventListener("click", () => openProject(project.id));
+
+        const renameBtn = document.createElement("button");
+        renameBtn.className = "small-btn";
+        renameBtn.textContent = "Rename";
+        renameBtn.addEventListener("click", () => {
+          const newName = prompt("Rename project", project.name);
+          if (!newName) return;
+          project.name = newName.trim() || project.name;
+          persistCurrentProject();
+          renderProjectList();
+        });
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.className = "small-btn";
+        deleteBtn.textContent = "Delete";
+        deleteBtn.addEventListener("click", () => {
+          if (projects.length === 1) {
+            alert("At least one project must remain.");
+            return;
+          }
+          projects = projects.filter(p => p.id !== project.id);
+          if (activeProjectId === project.id) {
+            activeProjectId = projects[0].id;
+            localStorage.setItem(ACTIVE_PROJECT_KEY, activeProjectId);
+          }
+          saveProjects();
+          renderProjectList();
+          renderNotes();
+        });
+
+        btnWrap.append(openBtn, renameBtn, deleteBtn);
+        item.append(name, btnWrap);
+        projectList.appendChild(item);
+      });
+    }
+
+    function openProject(projectId) {
+      activeProjectId = projectId;
+      localStorage.setItem(ACTIVE_PROJECT_KEY, activeProjectId);
+      selectedNoteId = null;
+      renderProjectList();
+      renderNotes();
+      setSaveStatus("saved", "Saved");
+    }
+
+    function createProject() {
+      const name = projectNameInput.value.trim() || "New Project";
+      const project = defaultProject(name);
+      project.notes = [];
+      initHistoryForProject(project);
+      projects.unshift(project);
+      activeProjectId = project.id;
+      localStorage.setItem(ACTIVE_PROJECT_KEY, activeProjectId);
+      projectNameInput.value = "";
+      saveProjects();
+      renderProjectList();
+      renderNotes();
+      setSaveStatus("saved", "Saved");
+    }
+
+    function createNote(data = {}) {
+      const project = getActiveProject();
+      if (!project) return;
+
+      const offset = project.notes.length * 14;
+      const note = {
+        id: uid("note"),
+        x: data.x ?? 100 + offset,
+        y: data.y ?? 90 + offset,
+        text: data.text ?? "Write your note here",
+        style: data.style ?? styleSelect.value,
+        highlight: data.highlight ?? highlightSelect.value,
+        color: data.color ?? normalizeColor(textColorInput.value)
+      };
+
+      project.notes.push(note);
+      renderNotes();
+      selectNote(note.id);
+      commitHistory();
+    }
+
+    function deleteSelectedNote() {
+      const project = getActiveProject();
+      if (!project || !selectedNoteId) return;
+      project.notes = project.notes.filter(n => n.id !== selectedNoteId);
+      selectedNoteId = null;
+      renderNotes();
+      commitHistory();
+    }
+
+    function selectNote(noteId) {
+      selectedNoteId = noteId;
+      noteElements.forEach((el, id) => {
+        el.classList.toggle("selected", id === noteId);
       });
 
-      if (highlightSelect.value !== "none") {
-        block.classList.add(`highlight-${highlightSelect.value}`);
+      const note = getSelectedNote();
+      if (!note) {
+        sideTextEditor.value = "";
+        return;
       }
 
-      block.style.color = textColorInput.value;
+      sideTextEditor.value = note.text;
+      sideStyleSelect.value = note.style;
+      sideHighlightSelect.value = note.highlight;
+      sideColorInput.value = note.color;
+      styleSelect.value = note.style;
+      highlightSelect.value = note.highlight;
+      textColorInput.value = note.color;
     }
 
-    function deleteSelected() {
-      if (!selectedBlock) return;
-      const toDelete = selectedBlock;
-      selectedBlock = null;
-      toDelete.remove();
+    function getSelectedNote() {
+      const project = getActiveProject();
+      if (!project) return null;
+      return project.notes.find(n => n.id === selectedNoteId) || null;
     }
 
-    function clamp(value, min, max) {
-      return Math.max(min, Math.min(max, value));
+    function normalizeColor(value) {
+      const v = (value || "").trim();
+      return /^#([0-9a-fA-F]{6})$/.test(v) ? v : "#272220";
     }
 
-    function attachBlockEvents(block, textEl) {
+    function applyNoteClasses(el, note) {
+      el.className = "note-block";
+      el.classList.add(`style-${note.style}`);
+      if (note.highlight !== "none") {
+        el.classList.add(`highlight-${note.highlight}`);
+      }
+      el.style.left = note.x + "px";
+      el.style.top = note.y + "px";
+      el.style.color = note.color;
+    }
+
+    function renderNotes() {
+      page.innerHTML = "";
+      noteElements.clear();
+
+      const project = getActiveProject();
+      if (!project) return;
+
+      project.notes.forEach(note => {
+        const block = document.createElement("div");
+        applyNoteClasses(block, note);
+        block.dataset.noteId = note.id;
+        block.style.zIndex = "10";
+
+        const textEl = document.createElement("div");
+        textEl.className = "note-text";
+        textEl.textContent = note.text;
+        textEl.contentEditable = "false";
+        block.appendChild(textEl);
+
+        attachNoteEvents(block, textEl, note.id);
+
+        page.appendChild(block);
+        noteElements.set(note.id, block);
+      });
+
+      if (selectedNoteId && project.notes.some(n => n.id === selectedNoteId)) {
+        selectNote(selectedNoteId);
+      } else if (project.notes.length) {
+        selectNote(project.notes[0].id);
+      } else {
+        selectedNoteId = null;
+        sideTextEditor.value = "";
+      }
+
+      updateUndoRedoButtons();
+      renderProjectList();
+    }
+
+    function attachNoteEvents(block, textEl, noteId) {
       let dragging = false;
+      let editing = false;
       let startX = 0;
       let startY = 0;
       let originLeft = 0;
       let originTop = 0;
-      let editing = false;
+
+      block.addEventListener("click", () => selectNote(noteId));
 
       block.addEventListener("pointerdown", (e) => {
         if (editing) return;
-        if (e.target === textEl && textEl.isContentEditable) return;
-
-        selectBlock(block);
+        selectNote(noteId);
 
         dragging = true;
         block.classList.add("dragging");
@@ -468,137 +1034,333 @@
 
         startX = e.clientX;
         startY = e.clientY;
-        originLeft = parseFloat(block.style.left || "0");
-        originTop = parseFloat(block.style.top || "0");
+        originLeft = parseFloat(block.style.left);
+        originTop = parseFloat(block.style.top);
       });
 
       block.addEventListener("pointermove", (e) => {
         if (!dragging) return;
-
         const dx = e.clientX - startX;
         const dy = e.clientY - startY;
 
         const maxLeft = page.clientWidth - block.offsetWidth - 8;
         const maxTop = page.clientHeight - block.offsetHeight - 8;
 
-        block.style.left = `${clamp(originLeft + dx, 8, Math.max(8, maxLeft))}px`;
-        block.style.top = `${clamp(originTop + dy, 8, Math.max(8, maxTop))}px`;
+        const newLeft = Math.max(8, Math.min(maxLeft, originLeft + dx));
+        const newTop = Math.max(8, Math.min(maxTop, originTop + dy));
+
+        block.style.left = newLeft + "px";
+        block.style.top = newTop + "px";
       });
 
-      function stopDrag() {
+      function finishDrag() {
+        if (!dragging) return;
         dragging = false;
         block.classList.remove("dragging");
+
+        const note = findNoteById(noteId);
+        if (!note) return;
+
+        note.x = parseFloat(block.style.left);
+        note.y = parseFloat(block.style.top);
+        commitHistory();
       }
 
-      block.addEventListener("pointerup", stopDrag);
-      block.addEventListener("pointercancel", stopDrag);
-      block.addEventListener("lostpointercapture", stopDrag);
+      block.addEventListener("pointerup", finishDrag);
+      block.addEventListener("pointercancel", finishDrag);
+      block.addEventListener("lostpointercapture", finishDrag);
 
       block.addEventListener("dblclick", () => {
-        startEditing();
+        startInlineEdit();
       });
 
-      let lastTap = 0;
-      block.addEventListener("touchend", () => {
-        const now = Date.now();
-        if (now - lastTap < 300) {
-          startEditing();
-        }
-        lastTap = now;
-      });
-
-      function startEditing() {
+      function startInlineEdit() {
         editing = true;
-        selectBlock(block);
+        selectNote(noteId);
         textEl.contentEditable = "true";
         textEl.focus();
 
         const range = document.createRange();
         range.selectNodeContents(textEl);
         range.collapse(false);
-
         const sel = window.getSelection();
         sel.removeAllRanges();
         sel.addRange(range);
       }
 
-      function stopEditing() {
+      function stopInlineEdit() {
+        if (!editing) return;
         editing = false;
         textEl.contentEditable = "false";
+        const note = findNoteById(noteId);
+        if (!note) return;
+        note.text = textEl.textContent;
+        sideTextEditor.value = note.text;
+        scheduleSave();
+        commitHistory();
       }
 
-      textEl.addEventListener("blur", stopEditing);
+      textEl.addEventListener("input", () => {
+        const note = findNoteById(noteId);
+        if (!note) return;
+        note.text = textEl.textContent;
+        sideTextEditor.value = note.text;
+        scheduleSave();
+      });
+
+      textEl.addEventListener("blur", stopInlineEdit);
 
       textEl.addEventListener("keydown", (e) => {
         if (e.key === "Escape") {
           textEl.blur();
         }
       });
-
-      block.addEventListener("click", () => selectBlock(block));
     }
 
-    addBlockBtn.addEventListener("click", () => {
-      const offset = document.querySelectorAll(".note-block").length * 14;
-      createBlock({
-        x: 110 + offset,
-        y: 90 + offset,
-        style: styleSelect.value,
-        highlight: highlightSelect.value,
-        color: textColorInput.value,
-        text:
-          styleSelect.value === "title" ? "New Title" :
-          styleSelect.value === "heading" ? "New Heading" :
-          styleSelect.value === "small" ? "Small note" :
-          "Write your note here"
+    function findNoteById(noteId) {
+      const project = getActiveProject();
+      if (!project) return null;
+      return project.notes.find(n => n.id === noteId) || null;
+    }
+
+    function applySideEditorChanges() {
+      const note = getSelectedNote();
+      if (!note) return;
+
+      note.text = sideTextEditor.value;
+      note.style = sideStyleSelect.value;
+      note.highlight = sideHighlightSelect.value;
+      note.color = normalizeColor(sideColorInput.value);
+
+      renderNotes();
+      selectNote(note.id);
+      commitHistory();
+    }
+
+    function syncSideEditorLive() {
+      const note = getSelectedNote();
+      if (!note) return;
+      note.text = sideTextEditor.value;
+      note.style = sideStyleSelect.value;
+      note.highlight = sideHighlightSelect.value;
+      note.color = normalizeColor(sideColorInput.value);
+
+      const el = noteElements.get(note.id);
+      if (!el) return;
+      applyNoteClasses(el, note);
+      const textEl = el.querySelector(".note-text");
+      if (textEl && textEl.textContent !== note.text) {
+        textEl.textContent = note.text;
+      }
+      scheduleSave();
+    }
+
+    function pushClipboardItem(note) {
+      clipboardHistory.unshift({
+        id: uid("clip"),
+        createdAt: Date.now(),
+        payload: JSON.parse(JSON.stringify(note))
       });
+      clipboardHistory = clipboardHistory.slice(0, 30);
+      saveClipboardHistory();
+    }
+
+    function copySelected() {
+      const note = getSelectedNote();
+      if (!note) return;
+      pushClipboardItem(note);
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(note.text).catch(() => {});
+      }
+    }
+
+    function cutSelected() {
+      const note = getSelectedNote();
+      if (!note) return;
+      pushClipboardItem(note);
+      deleteSelectedNote();
+    }
+
+    function pasteLatest() {
+      const project = getActiveProject();
+      if (!project) return;
+
+      if (clipboardHistory.length) {
+        const latest = JSON.parse(JSON.stringify(clipboardHistory[0].payload));
+        latest.id = uid("note");
+        latest.x = Math.min((latest.x || 100) + 24, page.clientWidth - 280);
+        latest.y = Math.min((latest.y || 100) + 24, page.clientHeight - 170);
+        project.notes.push(latest);
+        renderNotes();
+        selectNote(latest.id);
+        commitHistory();
+        return;
+      }
+
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.readText().then(text => {
+          createNote({ text: text || "Pasted note", style: "body", highlight: "yellow" });
+        }).catch(() => {});
+      }
+    }
+
+    function openClipboardModal() {
+      renderClipboardModal();
+      clipboardModal.classList.add("open");
+    }
+
+    function closeClipboardModal() {
+      clipboardModal.classList.remove("open");
+    }
+
+    function renderClipboardModal() {
+      clipboardList.innerHTML = "";
+      if (!clipboardHistory.length) {
+        const empty = document.createElement("div");
+        empty.className = "clip-item";
+        empty.textContent = "No copied notes yet.";
+        clipboardList.appendChild(empty);
+        return;
+      }
+
+      clipboardHistory.forEach(item => {
+        const wrap = document.createElement("div");
+        wrap.className = "clip-item";
+
+        const preview = document.createElement("div");
+        preview.className = "clip-preview";
+        preview.textContent = item.payload.text || "(empty note)";
+
+        const meta = document.createElement("div");
+        meta.className = "clip-meta";
+        meta.textContent = new Date(item.createdAt).toLocaleString();
+
+        const buttons = document.createElement("div");
+        buttons.style.display = "flex";
+        buttons.style.gap = "8px";
+        buttons.style.marginTop = "8px";
+
+        const useBtn = document.createElement("button");
+        useBtn.className = "small-btn";
+        useBtn.textContent = "Paste this";
+        useBtn.addEventListener("click", () => {
+          const project = getActiveProject();
+          if (!project) return;
+          const note = JSON.parse(JSON.stringify(item.payload));
+          note.id = uid("note");
+          note.x = 110 + (project.notes.length * 12);
+          note.y = 100 + (project.notes.length * 12);
+          project.notes.push(note);
+          renderNotes();
+          selectNote(note.id);
+          commitHistory();
+          closeClipboardModal();
+        });
+
+        const removeBtn = document.createElement("button");
+        removeBtn.className = "small-btn";
+        removeBtn.textContent = "Remove";
+        removeBtn.addEventListener("click", () => {
+          clipboardHistory = clipboardHistory.filter(c => c.id !== item.id);
+          saveClipboardHistory();
+          renderClipboardModal();
+        });
+
+        buttons.append(useBtn, removeBtn);
+        wrap.append(preview, meta, buttons);
+        clipboardList.appendChild(wrap);
+      });
+    }
+
+    function handleGlobalShortcuts(e) {
+      const isMac = /Mac|iPhone|iPad/.test(navigator.platform);
+      const mod = isMac ? e.metaKey : e.ctrlKey;
+      if (!mod) return;
+
+      const key = e.key.toLowerCase();
+
+      if (key === "z" && !e.shiftKey) {
+        e.preventDefault();
+        undo();
+        return;
+      }
+
+      if (key === "z" && e.shiftKey) {
+        e.preventDefault();
+        redo();
+        return;
+      }
+
+      if (key === "c") {
+        e.preventDefault();
+        copySelected();
+        return;
+      }
+
+      if (key === "x") {
+        e.preventDefault();
+        cutSelected();
+        return;
+      }
+
+      if (key === "v" && e.shiftKey) {
+        e.preventDefault();
+        openClipboardModal();
+        return;
+      }
+
+      if (key === "v") {
+        e.preventDefault();
+        pasteLatest();
+      }
+    }
+
+    createProjectBtn.addEventListener("click", createProject);
+    addNoteBtn.addEventListener("click", () => createNote());
+    deleteNoteBtn.addEventListener("click", deleteSelectedNote);
+
+    applyChangesBtn.addEventListener("click", applySideEditorChanges);
+
+    sideTextEditor.addEventListener("input", syncSideEditorLive);
+    sideStyleSelect.addEventListener("change", syncSideEditorLive);
+    sideHighlightSelect.addEventListener("change", syncSideEditorLive);
+    sideColorInput.addEventListener("input", syncSideEditorLive);
+
+    sideTextEditor.addEventListener("blur", commitHistory);
+    sideColorInput.addEventListener("blur", commitHistory);
+    sideStyleSelect.addEventListener("change", commitHistory);
+    sideHighlightSelect.addEventListener("change", commitHistory);
+
+    undoBtn.addEventListener("click", undo);
+    redoBtn.addEventListener("click", redo);
+    copyBtn.addEventListener("click", copySelected);
+    cutBtn.addEventListener("click", cutSelected);
+    pasteBtn.addEventListener("click", pasteLatest);
+    clipboardBtn.addEventListener("click", openClipboardModal);
+
+    closeClipboardBtn.addEventListener("click", closeClipboardModal);
+    clipboardModal.addEventListener("click", (e) => {
+      if (e.target === clipboardModal) closeClipboardModal();
     });
 
-    applyStyleBtn.addEventListener("click", () => applyStyle(selectedBlock));
-    deleteBlockBtn.addEventListener("click", deleteSelected);
+    document.addEventListener("keydown", handleGlobalShortcuts);
 
     page.addEventListener("click", (e) => {
       if (e.target === page) {
-        document.querySelectorAll(".note-block").forEach(el => el.classList.remove("selected"));
-        selectedBlock = null;
+        selectedNoteId = null;
+        noteElements.forEach(el => el.classList.remove("selected"));
       }
     });
 
-    createBlock({
-      x: 115,
-      y: 80,
-      text: "Biology Notes",
-      style: "title",
-      highlight: "none",
-      color: "#272220"
+    window.addEventListener("beforeunload", () => {
+      clearTimeout(typingTimer);
+      persistCurrentProject();
     });
 
-    createBlock({
-      x: 120,
-      y: 170,
-      text: "Cell Structure",
-      style: "heading",
-      highlight: "yellow",
-      color: "#272220"
-    });
-
-    createBlock({
-      x: 130,
-      y: 250,
-      text: "The nucleus controls the cell and contains genetic material.",
-      style: "body",
-      highlight: "green",
-      color: "#272220"
-    });
-
-    createBlock({
-      x: 150,
-      y: 340,
-      text: "remember: mitochondria = energy",
-      style: "small",
-      highlight: "pink",
-      color: "#5a4f4a"
-    });
+    ensureProject();
+    renderProjectList();
+    renderNotes();
+    setSaveStatus("saved", "Saved");
   </script>
 </body>
 </html>
