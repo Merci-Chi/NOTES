@@ -183,6 +183,16 @@
       font-size: 1.15rem;
     }
 
+    input[type="color"] {
+      width: 100%;
+      height: 46px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 4px;
+      background: #fff;
+      cursor: pointer;
+    }
+
     textarea {
       min-height: 190px;
       resize: vertical;
@@ -337,7 +347,7 @@
       height: var(--note-height);
       padding: 12px 14px;
       border-radius: 16px;
-      overflow: hidden;
+      overflow: auto;
       cursor: grab;
       user-select: none;
       -webkit-user-select: none;
@@ -357,12 +367,13 @@
     }
 
     .note-text {
-      width: 100%;
-      height: 100%;
+      display: inline;
+      width: auto;
+      height: auto;
       outline: none;
       white-space: pre-wrap;
       word-break: break-word;
-      overflow: auto;
+      overflow: visible;
       line-height: 1.1;
     }
 
@@ -392,9 +403,10 @@
     .highlight-blue .note-text,
     .highlight-green .note-text,
     .highlight-purple .note-text {
+      display: inline;
       box-decoration-break: clone;
       -webkit-box-decoration-break: clone;
-      padding: 0 4px;
+      padding: 0 3px;
       border-radius: 8px;
     }
 
@@ -595,7 +607,7 @@
 
           <div>
             <label for="sideColorInput">Text color</label>
-            <input id="sideColorInput" type="text" value="#272220" />
+            <input id="sideColorInput" type="color" value="#272220" />
           </div>
 
           <div class="row">
@@ -1027,8 +1039,7 @@
     }
 
     function normalizeColor(value) {
-      const v = (value || "").trim();
-      return /^#([0-9a-fA-F]{6})$/.test(v) ? v : "#272220";
+      return /^#([0-9a-fA-F]{6})$/.test(value || "") ? value : "#272220";
     }
 
     function createPage() {
@@ -1044,9 +1055,8 @@
     }
 
     function createNote(data = {}) {
-      const project = getActiveProject();
       const page = getCurrentPage();
-      if (!project || !page) return;
+      if (!page) return;
 
       const offset = page.notes.length * 14;
       const note = {
@@ -1067,9 +1077,8 @@
     }
 
     function deleteSelectedNote() {
-      const project = getActiveProject();
       const note = findSelectedNote();
-      if (!project || !note) return;
+      if (!note) return;
 
       const page = getPageById(note.pageId);
       if (!page) return;
