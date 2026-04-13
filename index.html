@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Study Notes App</title>
+  <title>Study Notes</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,11 +17,12 @@
       --ink: #272220;
       --muted: #786d66;
       --border: rgba(0,0,0,0.08);
-      --shadow: 0 12px 30px rgba(0,0,0,0.10);
+      --shadow: 0 12px 28px rgba(0,0,0,0.10);
       --radius: 22px;
-      --sidebar-bg: rgba(255,255,255,0.82);
+      --sidebar-bg: rgba(255,255,255,0.84);
       --note-width: 260px;
       --note-height: 150px;
+      --topbar-h: 68px;
     }
 
     * { box-sizing: border-box; }
@@ -29,7 +30,7 @@
     html, body {
       margin: 0;
       padding: 0;
-      min-height: 100%;
+      height: 100%;
       font-family: "Caveat", cursive;
       background:
         radial-gradient(circle at top left, #f8f1d9 0%, transparent 30%),
@@ -37,7 +38,7 @@
         var(--bg);
       color: var(--ink);
       overflow: hidden;
-      touch-action: none;
+      touch-action: manipulation;
     }
 
     button, input, select, textarea {
@@ -47,7 +48,7 @@
     .app {
       height: 100vh;
       display: grid;
-      grid-template-rows: 68px 1fr;
+      grid-template-rows: var(--topbar-h) 1fr;
     }
 
     .topbar {
@@ -68,14 +69,25 @@
       min-width: 0;
     }
 
+    .home-circle {
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: white;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      font-size: 1.1rem;
+      line-height: 1;
+    }
+
     .top-title {
       font-size: 1.55rem;
       font-weight: 700;
-      margin-right: 8px;
       white-space: nowrap;
     }
 
-    .toolbar-btn, .status-pill, .small-btn {
+    .toolbar-btn, .small-btn, .status-pill {
       border: 1px solid var(--border);
       background: white;
       border-radius: 14px;
@@ -103,12 +115,26 @@
     .status-saved { background: #dff5df; }
     .status-unsaved { background: #ffdede; }
 
-    .main {
-      display: grid;
-      grid-template-columns: 320px 1fr 340px;
-      gap: 14px;
-      padding: 14px;
+    .screen {
       min-height: 0;
+      min-width: 0;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .projects-screen {
+      height: 100%;
+      overflow: auto;
+      padding: 18px;
+    }
+
+    .projects-wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      gap: 16px;
     }
 
     .panel {
@@ -124,12 +150,12 @@
 
     .panel h2 {
       margin: 0 0 10px;
-      font-size: 1.6rem;
+      font-size: 1.65rem;
       line-height: 1;
     }
 
     .panel h3 {
-      margin: 12px 0 8px;
+      margin: 10px 0 8px;
       font-size: 1.25rem;
       line-height: 1;
       color: #4f463f;
@@ -158,7 +184,7 @@
     }
 
     textarea {
-      min-height: 180px;
+      min-height: 190px;
       resize: vertical;
       line-height: 1.15;
     }
@@ -176,59 +202,89 @@
     .btn.secondary { background: #e5efff; }
     .btn.danger { background: #ffd8d8; }
 
-    .row {
+    .project-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 12px;
+      margin-top: 12px;
     }
 
-    .project-list, .clipboard-list {
-      display: grid;
-      gap: 8px;
-      margin-top: 8px;
-    }
-
-    .project-item, .clip-item {
+    .project-card {
       border: 1px solid var(--border);
-      border-radius: 14px;
-      background: rgba(255,255,255,0.8);
-      padding: 10px 12px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.85);
+      padding: 14px;
+      display: grid;
+      gap: 10px;
     }
 
-    .project-item {
+    .project-card-title {
+      font-size: 1.35rem;
+      line-height: 1;
+    }
+
+    .project-meta {
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .project-card-actions {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
       gap: 8px;
+      flex-wrap: wrap;
     }
 
-    .project-name {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      font-size: 1.15rem;
+    .editor-screen {
+      height: 100%;
+      min-height: 0;
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 14px;
+      padding: 14px;
     }
 
-    .project-item.active {
-      outline: 2px solid rgba(77, 130, 255, 0.28);
-      background: #edf4ff;
+    .editor-panel {
+      overflow: auto;
     }
 
-    .workspace-shell {
+    .page-region {
       min-width: 0;
       min-height: 0;
+      overflow: hidden;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+    }
+
+    .pages-scroller {
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+      overflow-x: hidden;
+      scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
+      padding: 8px 8px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .page-frame {
+      width: 100%;
+      min-height: calc(100vh - var(--topbar-h) - 44px);
       display: flex;
       align-items: center;
       justify-content: center;
-      overflow: auto;
-      padding: 8px;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
     }
 
     .page {
       position: relative;
       width: min(100%, 980px);
       height: min(100%, 1400px);
-      min-height: 82vh;
+      min-height: calc(100vh - var(--topbar-h) - 90px);
       background:
         repeating-linear-gradient(
           to bottom,
@@ -249,6 +305,30 @@
       background:
         linear-gradient(to right, rgba(255,90,90,0.12), rgba(255,90,90,0.12)) 72px 0 / 2px 100% no-repeat;
       pointer-events: none;
+    }
+
+    .page-arrow {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 52px;
+      height: 52px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.95);
+      box-shadow: 0 10px 18px rgba(0,0,0,0.10);
+      cursor: pointer;
+      z-index: 30;
+      font-size: 1.5rem;
+      line-height: 1;
+    }
+
+    .page-arrow.top {
+      top: 18px;
+    }
+
+    .page-arrow.bottom {
+      bottom: 18px;
     }
 
     .note-block {
@@ -307,44 +387,27 @@
       color: rgba(39, 34, 32, 0.68);
     }
 
-    .highlight-yellow .note-text {
-      background: rgba(255,233,117,0.78);
-      box-decoration-break: clone;
-      -webkit-box-decoration-break: clone;
-      padding: 0 4px;
-      border-radius: 8px;
-    }
-
-    .highlight-pink .note-text {
-      background: rgba(255,175,206,0.75);
-      box-decoration-break: clone;
-      -webkit-box-decoration-break: clone;
-      padding: 0 4px;
-      border-radius: 8px;
-    }
-
-    .highlight-blue .note-text {
-      background: rgba(163,214,255,0.75);
-      box-decoration-break: clone;
-      -webkit-box-decoration-break: clone;
-      padding: 0 4px;
-      border-radius: 8px;
-    }
-
-    .highlight-green .note-text {
-      background: rgba(177,244,186,0.75);
-      box-decoration-break: clone;
-      -webkit-box-decoration-break: clone;
-      padding: 0 4px;
-      border-radius: 8px;
-    }
-
+    .highlight-yellow .note-text,
+    .highlight-pink .note-text,
+    .highlight-blue .note-text,
+    .highlight-green .note-text,
     .highlight-purple .note-text {
-      background: rgba(213,191,255,0.75);
       box-decoration-break: clone;
       -webkit-box-decoration-break: clone;
       padding: 0 4px;
       border-radius: 8px;
+    }
+
+    .highlight-yellow .note-text { background: rgba(255,233,117,0.78); }
+    .highlight-pink .note-text   { background: rgba(255,175,206,0.75); }
+    .highlight-blue .note-text   { background: rgba(163,214,255,0.75); }
+    .highlight-green .note-text  { background: rgba(177,244,186,0.75); }
+    .highlight-purple .note-text { background: rgba(213,191,255,0.75); }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
     }
 
     .help {
@@ -392,6 +455,18 @@
       font-size: 1.6rem;
     }
 
+    .clipboard-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .clip-item {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: rgba(255,255,255,0.8);
+      padding: 10px 12px;
+    }
+
     .clip-meta {
       color: var(--muted);
       font-size: 0.95rem;
@@ -405,22 +480,22 @@
       font-size: 1.15rem;
     }
 
-    @media (max-width: 1100px) {
-      .main {
-        grid-template-columns: 290px 1fr;
-        grid-template-rows: 1fr auto;
-      }
-
-      .editor-panel {
-        grid-column: 1 / -1;
-      }
-    }
-
-    @media (max-width: 760px) {
-      .app {
+    @media (max-width: 950px) {
+      .editor-screen {
+        grid-template-columns: 1fr;
         grid-template-rows: auto 1fr;
       }
 
+      .editor-panel {
+        max-height: 40vh;
+      }
+
+      .page {
+        min-height: calc(100vh - var(--topbar-h) - 350px);
+      }
+    }
+
+    @media (max-width: 700px) {
       .topbar {
         flex-direction: column;
         align-items: stretch;
@@ -430,14 +505,12 @@
         flex-wrap: wrap;
       }
 
-      .main {
-        grid-template-columns: 1fr;
+      .editor-screen, .projects-screen {
         padding: 10px;
       }
 
       .page {
         width: 100%;
-        min-height: 78vh;
       }
 
       .note-block {
@@ -451,6 +524,7 @@
   <div class="app">
     <header class="topbar">
       <div class="top-left">
+        <button class="home-circle" id="homeBtn" title="Back to projects">○</button>
         <div class="top-title">Study Notes</div>
         <button class="toolbar-btn" id="undoBtn">← Back</button>
         <button class="toolbar-btn" id="redoBtn">→ Forward</button>
@@ -465,68 +539,27 @@
       </div>
     </header>
 
-    <div class="main">
-      <aside class="panel">
-        <h2>Projects</h2>
-
-        <div class="stack">
-          <div>
-            <label for="projectNameInput">New project name</label>
-            <input id="projectNameInput" type="text" placeholder="My notes project" />
+    <section class="screen projects-screen" id="projectsScreen">
+      <div class="projects-wrap">
+        <div class="panel">
+          <h2>Projects</h2>
+          <div class="stack">
+            <div>
+              <label for="projectNameInput">New project name</label>
+              <input id="projectNameInput" type="text" placeholder="My notes project" />
+            </div>
+            <button class="btn primary" id="createProjectBtn">Create project</button>
           </div>
-          <button class="btn primary" id="createProjectBtn">Create project</button>
         </div>
 
-        <h3>Open project</h3>
-        <div class="project-list" id="projectList"></div>
-
-        <h3>Add note</h3>
-        <div class="stack">
-          <div>
-            <label for="styleSelect">Text style</label>
-            <select id="styleSelect">
-              <option value="title">Title</option>
-              <option value="heading">Heading</option>
-              <option value="body" selected>Regular text</option>
-              <option value="small">Small / lighter</option>
-            </select>
-          </div>
-
-          <div>
-            <label for="highlightSelect">Highlight</label>
-            <select id="highlightSelect">
-              <option value="none">None</option>
-              <option value="yellow" selected>Yellow</option>
-              <option value="pink">Pink</option>
-              <option value="blue">Blue</option>
-              <option value="green">Green</option>
-              <option value="purple">Purple</option>
-            </select>
-          </div>
-
-          <div>
-            <label for="textColorInput">Text color</label>
-            <input id="textColorInput" type="text" value="#272220" />
-          </div>
-
-          <button class="btn secondary" id="addNoteBtn">Add note card</button>
-          <button class="btn danger" id="deleteNoteBtn">Delete selected</button>
+        <div class="panel">
+          <h2>Your Projects</h2>
+          <div class="project-grid" id="projectGrid"></div>
         </div>
+      </div>
+    </section>
 
-        <h3>Shortcuts</h3>
-        <div class="help">
-          Cmd/Ctrl+Z = undo<br>
-          Cmd/Ctrl+Shift+Z = redo<br>
-          Cmd/Ctrl+C = copy<br>
-          Cmd/Ctrl+V = paste<br>
-          Cmd/Ctrl+Shift+V = clipboard history
-        </div>
-      </aside>
-
-      <main class="workspace-shell">
-        <section class="page" id="page"></section>
-      </main>
-
+    <section class="screen editor-screen hidden" id="editorScreen">
       <aside class="panel editor-panel">
         <h2>Selected Note</h2>
 
@@ -565,15 +598,29 @@
             <input id="sideColorInput" type="text" value="#272220" />
           </div>
 
+          <div class="row">
+            <button class="btn secondary" id="addNoteBtn">Add note</button>
+            <button class="btn danger" id="deleteNoteBtn">Delete</button>
+          </div>
+
           <button class="btn primary" id="applyChangesBtn">Apply changes</button>
+          <button class="btn secondary" id="addPageBtn">Add page</button>
         </div>
 
-        <h3>Note</h3>
+        <h3>Shortcuts</h3>
         <div class="help">
-          You can edit from here or double click a note on the page. All note cards stay the same size.
+          Cmd/Ctrl+Z = undo<br>
+          Cmd/Ctrl+Shift+Z = redo<br>
+          Cmd/Ctrl+C = copy<br>
+          Cmd/Ctrl+V = paste<br>
+          Cmd/Ctrl+Shift+V = clipboard history
         </div>
       </aside>
-    </div>
+
+      <main class="page-region">
+        <div class="pages-scroller" id="pagesScroller"></div>
+      </main>
+    </section>
   </div>
 
   <div class="modal-backdrop" id="clipboardModal">
@@ -587,28 +634,11 @@
   </div>
 
   <script>
-    const STORAGE_KEY = "study-notes-projects-v2";
-    const ACTIVE_PROJECT_KEY = "study-notes-active-project-v2";
-    const CLIPBOARD_KEY = "study-notes-clipboard-v2";
+    const STORAGE_KEY = "study-notes-projects-v3";
+    const ACTIVE_PROJECT_KEY = "study-notes-active-project-v3";
+    const CLIPBOARD_KEY = "study-notes-clipboard-v3";
 
-    const page = document.getElementById("page");
-    const projectNameInput = document.getElementById("projectNameInput");
-    const createProjectBtn = document.getElementById("createProjectBtn");
-    const projectList = document.getElementById("projectList");
-
-    const addNoteBtn = document.getElementById("addNoteBtn");
-    const deleteNoteBtn = document.getElementById("deleteNoteBtn");
-
-    const styleSelect = document.getElementById("styleSelect");
-    const highlightSelect = document.getElementById("highlightSelect");
-    const textColorInput = document.getElementById("textColorInput");
-
-    const sideTextEditor = document.getElementById("sideTextEditor");
-    const sideStyleSelect = document.getElementById("sideStyleSelect");
-    const sideHighlightSelect = document.getElementById("sideHighlightSelect");
-    const sideColorInput = document.getElementById("sideColorInput");
-    const applyChangesBtn = document.getElementById("applyChangesBtn");
-
+    const homeBtn = document.getElementById("homeBtn");
     const undoBtn = document.getElementById("undoBtn");
     const redoBtn = document.getElementById("redoBtn");
     const copyBtn = document.getElementById("copyBtn");
@@ -617,18 +647,35 @@
     const clipboardBtn = document.getElementById("clipboardBtn");
     const saveStatus = document.getElementById("saveStatus");
 
+    const projectsScreen = document.getElementById("projectsScreen");
+    const editorScreen = document.getElementById("editorScreen");
+    const projectNameInput = document.getElementById("projectNameInput");
+    const createProjectBtn = document.getElementById("createProjectBtn");
+    const projectGrid = document.getElementById("projectGrid");
+
+    const sideTextEditor = document.getElementById("sideTextEditor");
+    const sideStyleSelect = document.getElementById("sideStyleSelect");
+    const sideHighlightSelect = document.getElementById("sideHighlightSelect");
+    const sideColorInput = document.getElementById("sideColorInput");
+    const addNoteBtn = document.getElementById("addNoteBtn");
+    const deleteNoteBtn = document.getElementById("deleteNoteBtn");
+    const applyChangesBtn = document.getElementById("applyChangesBtn");
+    const addPageBtn = document.getElementById("addPageBtn");
+
+    const pagesScroller = document.getElementById("pagesScroller");
+
     const clipboardModal = document.getElementById("clipboardModal");
     const clipboardList = document.getElementById("clipboardList");
     const closeClipboardBtn = document.getElementById("closeClipboardBtn");
 
     let projects = loadProjects();
     let clipboardHistory = loadClipboardHistory();
-    let activeProjectId = localStorage.getItem(ACTIVE_PROJECT_KEY);
+    let activeProjectId = localStorage.getItem(ACTIVE_PROJECT_KEY) || null;
     let selectedNoteId = null;
+    let selectedPageId = null;
     let noteElements = new Map();
 
     let typingTimer = null;
-    let isTyping = false;
     let suspendHistory = false;
 
     function uid(prefix = "id") {
@@ -636,20 +683,26 @@
     }
 
     function defaultProject(name = "My Project") {
+      const firstPageId = uid("page");
       return {
         id: uid("project"),
         name,
-        notes: [],
+        pages: [
+          { id: firstPageId, notes: [] }
+        ],
         history: [],
         historyIndex: -1,
         updatedAt: Date.now()
       };
     }
 
-    function defaultStarterNotes() {
-      return [
+    function starterProject(name = "My First Notes") {
+      const project = defaultProject(name);
+      const pageId = project.pages[0].id;
+      project.pages[0].notes = [
         {
           id: uid("note"),
+          pageId,
           x: 110,
           y: 80,
           text: "Biology Notes",
@@ -659,8 +712,9 @@
         },
         {
           id: uid("note"),
+          pageId,
           x: 120,
-          y: 200,
+          y: 230,
           text: "Cell Structure",
           style: "heading",
           highlight: "yellow",
@@ -668,14 +722,17 @@
         },
         {
           id: uid("note"),
+          pageId,
           x: 140,
-          y: 310,
+          y: 370,
           text: "The nucleus controls the cell and contains genetic material.",
           style: "body",
           highlight: "green",
           color: "#272220"
         }
       ];
+      initHistoryForProject(project);
+      return project;
     }
 
     function loadProjects() {
@@ -708,13 +765,28 @@
       return projects.find(p => p.id === activeProjectId) || null;
     }
 
-    function ensureProject() {
+    function ensureProjectData(project) {
+      if (!Array.isArray(project.pages) || !project.pages.length) {
+        project.pages = [{ id: uid("page"), notes: [] }];
+      }
+
+      project.pages.forEach(page => {
+        if (!Array.isArray(page.notes)) page.notes = [];
+        page.notes.forEach(note => {
+          if (!note.pageId) note.pageId = page.id;
+        });
+      });
+
+      if (!Array.isArray(project.history) || typeof project.historyIndex !== "number") {
+        initHistoryForProject(project);
+      }
+    }
+
+    function ensureProjects() {
       if (!projects.length) {
-        const p = defaultProject("My First Notes");
-        p.notes = defaultStarterNotes();
-        projects.push(p);
-        initHistoryForProject(p);
-        activeProjectId = p.id;
+        const project = starterProject();
+        projects.push(project);
+        activeProjectId = project.id;
         localStorage.setItem(ACTIVE_PROJECT_KEY, activeProjectId);
         saveProjects();
       }
@@ -724,19 +796,16 @@
         localStorage.setItem(ACTIVE_PROJECT_KEY, activeProjectId);
       }
 
-      const project = getActiveProject();
-      if (project && (!Array.isArray(project.history) || typeof project.historyIndex !== "number")) {
-        initHistoryForProject(project);
-      }
+      projects.forEach(ensureProjectData);
+    }
+
+    function snapshotProjectContent(project) {
+      return JSON.parse(JSON.stringify({ pages: project.pages }));
     }
 
     function initHistoryForProject(project) {
-      project.history = [snapshotNotes(project.notes)];
+      project.history = [snapshotProjectContent(project)];
       project.historyIndex = 0;
-    }
-
-    function snapshotNotes(notes) {
-      return JSON.parse(JSON.stringify(notes));
     }
 
     function setSaveStatus(state, text) {
@@ -749,17 +818,6 @@
       saveStatus.textContent = text;
     }
 
-    function scheduleSave() {
-      isTyping = true;
-      setSaveStatus("saving", "Saving...");
-      clearTimeout(typingTimer);
-      typingTimer = setTimeout(() => {
-        isTyping = false;
-        persistCurrentProject();
-        setSaveStatus("saved", "Saved");
-      }, 1000);
-    }
-
     function persistCurrentProject() {
       const project = getActiveProject();
       if (!project) return;
@@ -767,26 +825,38 @@
       saveProjects();
     }
 
+    function scheduleSave() {
+      setSaveStatus("saving", "Saving...");
+      clearTimeout(typingTimer);
+      typingTimer = setTimeout(() => {
+        persistCurrentProject();
+        setSaveStatus("saved", "Saved");
+      }, 1000);
+    }
+
     function commitHistory() {
       if (suspendHistory) return;
       const project = getActiveProject();
       if (!project) return;
 
-      const current = snapshotNotes(project.notes);
+      const current = snapshotProjectContent(project);
       const last = project.history[project.historyIndex];
       if (JSON.stringify(last) === JSON.stringify(current)) {
         persistCurrentProject();
+        updateUndoRedoButtons();
         return;
       }
 
       project.history = project.history.slice(0, project.historyIndex + 1);
       project.history.push(current);
+
       if (project.history.length > 100) {
         project.history.shift();
       } else {
         project.historyIndex++;
       }
-      if (project.history.length === 100 && project.historyIndex >= 99) {
+
+      if (project.history.length === 100 && project.historyIndex > 99) {
         project.historyIndex = 99;
       }
 
@@ -796,9 +866,30 @@
 
     function updateUndoRedoButtons() {
       const project = getActiveProject();
-      if (!project) return;
+      if (!project) {
+        undoBtn.disabled = true;
+        redoBtn.disabled = true;
+        return;
+      }
       undoBtn.disabled = project.historyIndex <= 0;
       redoBtn.disabled = project.historyIndex >= project.history.length - 1;
+    }
+
+    function restoreFromHistory(project) {
+      suspendHistory = true;
+      const snapshot = project.history[project.historyIndex];
+      project.pages = JSON.parse(JSON.stringify(snapshot.pages));
+      if (!project.pages.some(p => p.id === selectedPageId)) {
+        selectedPageId = project.pages[0]?.id || null;
+      }
+      if (!findSelectedNote()) {
+        selectedNoteId = null;
+      }
+      renderEditor();
+      persistCurrentProject();
+      setSaveStatus("saved", "Saved");
+      suspendHistory = false;
+      updateUndoRedoButtons();
     }
 
     function undo() {
@@ -815,48 +906,85 @@
       restoreFromHistory(project);
     }
 
-    function restoreFromHistory(project) {
-      suspendHistory = true;
-      project.notes = snapshotNotes(project.history[project.historyIndex]);
-      renderNotes();
-      persistCurrentProject();
-      setSaveStatus("saved", "Saved");
-      suspendHistory = false;
-      updateUndoRedoButtons();
+    function showProjectsScreen() {
+      projectsScreen.classList.remove("hidden");
+      editorScreen.classList.add("hidden");
+      selectedNoteId = null;
+      renderProjectGrid();
     }
 
-    function renderProjectList() {
-      projectList.innerHTML = "";
+    function showEditorScreen() {
+      projectsScreen.classList.add("hidden");
+      editorScreen.classList.remove("hidden");
+      renderEditor();
+    }
+
+    function createProject() {
+      const name = projectNameInput.value.trim() || "New Project";
+      const project = defaultProject(name);
+      initHistoryForProject(project);
+      projects.unshift(project);
+      activeProjectId = project.id;
+      selectedPageId = project.pages[0].id;
+      selectedNoteId = null;
+      localStorage.setItem(ACTIVE_PROJECT_KEY, activeProjectId);
+      projectNameInput.value = "";
+      saveProjects();
+      renderProjectGrid();
+      showEditorScreen();
+      setSaveStatus("saved", "Saved");
+    }
+
+    function openProject(projectId) {
+      activeProjectId = projectId;
+      localStorage.setItem(ACTIVE_PROJECT_KEY, activeProjectId);
+      const project = getActiveProject();
+      ensureProjectData(project);
+      selectedPageId = project.pages[0]?.id || null;
+      selectedNoteId = null;
+      showEditorScreen();
+      setSaveStatus("saved", "Saved");
+    }
+
+    function renderProjectGrid() {
+      projectGrid.innerHTML = "";
+
       projects.forEach(project => {
-        const item = document.createElement("div");
-        item.className = "project-item" + (project.id === activeProjectId ? " active" : "");
+        const card = document.createElement("div");
+        card.className = "project-card";
 
-        const name = document.createElement("div");
-        name.className = "project-name";
-        name.textContent = project.name;
+        const title = document.createElement("div");
+        title.className = "project-card-title";
+        title.textContent = project.name;
 
-        const btnWrap = document.createElement("div");
-        btnWrap.style.display = "flex";
-        btnWrap.style.gap = "6px";
+        const pageCount = Array.isArray(project.pages) ? project.pages.length : 0;
+        const noteCount = (project.pages || []).reduce((sum, p) => sum + (p.notes?.length || 0), 0);
+
+        const meta = document.createElement("div");
+        meta.className = "project-meta";
+        meta.textContent = `${pageCount} page${pageCount === 1 ? "" : "s"} • ${noteCount} note${noteCount === 1 ? "" : "s"}`;
+
+        const actions = document.createElement("div");
+        actions.className = "project-card-actions";
 
         const openBtn = document.createElement("button");
-        openBtn.className = "small-btn";
+        openBtn.className = "btn primary";
         openBtn.textContent = "Open";
         openBtn.addEventListener("click", () => openProject(project.id));
 
         const renameBtn = document.createElement("button");
-        renameBtn.className = "small-btn";
+        renameBtn.className = "btn";
         renameBtn.textContent = "Rename";
         renameBtn.addEventListener("click", () => {
           const newName = prompt("Rename project", project.name);
           if (!newName) return;
           project.name = newName.trim() || project.name;
-          persistCurrentProject();
-          renderProjectList();
+          saveProjects();
+          renderProjectGrid();
         });
 
         const deleteBtn = document.createElement("button");
-        deleteBtn.className = "small-btn";
+        deleteBtn.className = "btn danger";
         deleteBtn.textContent = "Delete";
         deleteBtn.addEventListener("click", () => {
           if (projects.length === 1) {
@@ -869,77 +997,98 @@
             localStorage.setItem(ACTIVE_PROJECT_KEY, activeProjectId);
           }
           saveProjects();
-          renderProjectList();
-          renderNotes();
+          renderProjectGrid();
         });
 
-        btnWrap.append(openBtn, renameBtn, deleteBtn);
-        item.append(name, btnWrap);
-        projectList.appendChild(item);
+        actions.append(openBtn, renameBtn, deleteBtn);
+        card.append(title, meta, actions);
+        projectGrid.appendChild(card);
       });
     }
 
-    function openProject(projectId) {
-      activeProjectId = projectId;
-      localStorage.setItem(ACTIVE_PROJECT_KEY, activeProjectId);
-      selectedNoteId = null;
-      renderProjectList();
-      renderNotes();
-      setSaveStatus("saved", "Saved");
+    function getPageById(pageId) {
+      const project = getActiveProject();
+      if (!project) return null;
+      return project.pages.find(p => p.id === pageId) || null;
     }
 
-    function createProject() {
-      const name = projectNameInput.value.trim() || "New Project";
-      const project = defaultProject(name);
-      project.notes = [];
-      initHistoryForProject(project);
-      projects.unshift(project);
-      activeProjectId = project.id;
-      localStorage.setItem(ACTIVE_PROJECT_KEY, activeProjectId);
-      projectNameInput.value = "";
-      saveProjects();
-      renderProjectList();
-      renderNotes();
-      setSaveStatus("saved", "Saved");
+    function getCurrentPage() {
+      return getPageById(selectedPageId);
+    }
+
+    function findSelectedNote() {
+      const project = getActiveProject();
+      if (!project) return null;
+      for (const page of project.pages) {
+        const note = page.notes.find(n => n.id === selectedNoteId);
+        if (note) return note;
+      }
+      return null;
+    }
+
+    function normalizeColor(value) {
+      const v = (value || "").trim();
+      return /^#([0-9a-fA-F]{6})$/.test(v) ? v : "#272220";
+    }
+
+    function createPage() {
+      const project = getActiveProject();
+      if (!project) return;
+      const page = { id: uid("page"), notes: [] };
+      project.pages.push(page);
+      selectedPageId = page.id;
+      selectedNoteId = null;
+      renderEditor();
+      scrollToPage(page.id);
+      commitHistory();
     }
 
     function createNote(data = {}) {
       const project = getActiveProject();
-      if (!project) return;
+      const page = getCurrentPage();
+      if (!project || !page) return;
 
-      const offset = project.notes.length * 14;
+      const offset = page.notes.length * 14;
       const note = {
         id: uid("note"),
+        pageId: page.id,
         x: data.x ?? 100 + offset,
-        y: data.y ?? 90 + offset,
+        y: data.y ?? 100 + offset,
         text: data.text ?? "Write your note here",
-        style: data.style ?? styleSelect.value,
-        highlight: data.highlight ?? highlightSelect.value,
-        color: data.color ?? normalizeColor(textColorInput.value)
+        style: data.style ?? sideStyleSelect.value,
+        highlight: data.highlight ?? sideHighlightSelect.value,
+        color: data.color ?? normalizeColor(sideColorInput.value)
       };
 
-      project.notes.push(note);
-      renderNotes();
-      selectNote(note.id);
+      page.notes.push(note);
+      selectedNoteId = note.id;
+      renderEditor();
       commitHistory();
     }
 
     function deleteSelectedNote() {
       const project = getActiveProject();
-      if (!project || !selectedNoteId) return;
-      project.notes = project.notes.filter(n => n.id !== selectedNoteId);
+      const note = findSelectedNote();
+      if (!project || !note) return;
+
+      const page = getPageById(note.pageId);
+      if (!page) return;
+
+      page.notes = page.notes.filter(n => n.id !== note.id);
       selectedNoteId = null;
-      renderNotes();
+      renderEditor();
       commitHistory();
     }
 
-    function selectNote(noteId) {
+    function selectNote(noteId, pageId) {
       selectedNoteId = noteId;
+      selectedPageId = pageId;
+
       noteElements.forEach((el, id) => {
         el.classList.toggle("selected", id === noteId);
       });
 
-      const note = getSelectedNote();
+      const note = findSelectedNote();
       if (!note) {
         sideTextEditor.value = "";
         return;
@@ -949,20 +1098,6 @@
       sideStyleSelect.value = note.style;
       sideHighlightSelect.value = note.highlight;
       sideColorInput.value = note.color;
-      styleSelect.value = note.style;
-      highlightSelect.value = note.highlight;
-      textColorInput.value = note.color;
-    }
-
-    function getSelectedNote() {
-      const project = getActiveProject();
-      if (!project) return null;
-      return project.notes.find(n => n.id === selectedNoteId) || null;
-    }
-
-    function normalizeColor(value) {
-      const v = (value || "").trim();
-      return /^#([0-9a-fA-F]{6})$/.test(v) ? v : "#272220";
     }
 
     function applyNoteClasses(el, note) {
@@ -976,45 +1111,94 @@
       el.style.color = note.color;
     }
 
-    function renderNotes() {
-      page.innerHTML = "";
-      noteElements.clear();
-
+    function renderEditor() {
       const project = getActiveProject();
       if (!project) return;
 
-      project.notes.forEach(note => {
-        const block = document.createElement("div");
-        applyNoteClasses(block, note);
-        block.dataset.noteId = note.id;
-        block.style.zIndex = "10";
+      ensureProjectData(project);
 
-        const textEl = document.createElement("div");
-        textEl.className = "note-text";
-        textEl.textContent = note.text;
-        textEl.contentEditable = "false";
-        block.appendChild(textEl);
+      if (!selectedPageId || !project.pages.some(p => p.id === selectedPageId)) {
+        selectedPageId = project.pages[0]?.id || null;
+      }
 
-        attachNoteEvents(block, textEl, note.id);
+      pagesScroller.innerHTML = "";
+      noteElements.clear();
 
-        page.appendChild(block);
-        noteElements.set(note.id, block);
+      project.pages.forEach((page, index) => {
+        const frame = document.createElement("div");
+        frame.className = "page-frame";
+        frame.dataset.pageId = page.id;
+
+        const pageEl = document.createElement("section");
+        pageEl.className = "page";
+        pageEl.dataset.pageId = page.id;
+
+        if (index > 0) {
+          const topArrow = document.createElement("button");
+          topArrow.className = "page-arrow top";
+          topArrow.textContent = "↑";
+          topArrow.title = "Previous page";
+          topArrow.addEventListener("click", () => scrollToPage(project.pages[index - 1].id));
+          pageEl.appendChild(topArrow);
+        }
+
+        if (index < project.pages.length - 1) {
+          const bottomArrow = document.createElement("button");
+          bottomArrow.className = "page-arrow bottom";
+          bottomArrow.textContent = "↓";
+          bottomArrow.title = "Next page";
+          bottomArrow.addEventListener("click", () => scrollToPage(project.pages[index + 1].id));
+          pageEl.appendChild(bottomArrow);
+        } else {
+          const bottomArrow = document.createElement("button");
+          bottomArrow.className = "page-arrow bottom";
+          bottomArrow.textContent = "+";
+          bottomArrow.title = "Add next page";
+          bottomArrow.addEventListener("click", () => {
+            createPage();
+          });
+          pageEl.appendChild(bottomArrow);
+        }
+
+        page.notes.forEach(note => {
+          const block = document.createElement("div");
+          block.dataset.noteId = note.id;
+          block.dataset.pageId = page.id;
+          applyNoteClasses(block, note);
+
+          const textEl = document.createElement("div");
+          textEl.className = "note-text";
+          textEl.textContent = note.text;
+          textEl.contentEditable = "false";
+          block.appendChild(textEl);
+
+          attachNoteEvents(block, textEl, note.id, page.id, pageEl);
+          noteElements.set(note.id, block);
+          pageEl.appendChild(block);
+        });
+
+        frame.appendChild(pageEl);
+        pagesScroller.appendChild(frame);
       });
 
-      if (selectedNoteId && project.notes.some(n => n.id === selectedNoteId)) {
-        selectNote(selectedNoteId);
-      } else if (project.notes.length) {
-        selectNote(project.notes[0].id);
+      if (selectedNoteId && findSelectedNote()) {
+        const note = findSelectedNote();
+        selectNote(note.id, note.pageId);
       } else {
-        selectedNoteId = null;
-        sideTextEditor.value = "";
+        const page = getCurrentPage();
+        if (page && page.notes.length) {
+          selectNote(page.notes[0].id, page.id);
+        } else {
+          selectedNoteId = null;
+          sideTextEditor.value = "";
+        }
       }
 
       updateUndoRedoButtons();
-      renderProjectList();
+      observeCurrentPage();
     }
 
-    function attachNoteEvents(block, textEl, noteId) {
+    function attachNoteEvents(block, textEl, noteId, pageId, pageEl) {
       let dragging = false;
       let editing = false;
       let startX = 0;
@@ -1022,11 +1206,15 @@
       let originLeft = 0;
       let originTop = 0;
 
-      block.addEventListener("click", () => selectNote(noteId));
+      block.addEventListener("click", (e) => {
+        e.stopPropagation();
+        selectNote(noteId, pageId);
+      });
 
       block.addEventListener("pointerdown", (e) => {
         if (editing) return;
-        selectNote(noteId);
+        e.stopPropagation();
+        selectNote(noteId, pageId);
 
         dragging = true;
         block.classList.add("dragging");
@@ -1040,11 +1228,12 @@
 
       block.addEventListener("pointermove", (e) => {
         if (!dragging) return;
+
         const dx = e.clientX - startX;
         const dy = e.clientY - startY;
 
-        const maxLeft = page.clientWidth - block.offsetWidth - 8;
-        const maxTop = page.clientHeight - block.offsetHeight - 8;
+        const maxLeft = pageEl.clientWidth - block.offsetWidth - 8;
+        const maxTop = pageEl.clientHeight - block.offsetHeight - 8;
 
         const newLeft = Math.max(8, Math.min(maxLeft, originLeft + dx));
         const newTop = Math.max(8, Math.min(maxTop, originTop + dy));
@@ -1058,7 +1247,7 @@
         dragging = false;
         block.classList.remove("dragging");
 
-        const note = findNoteById(noteId);
+        const note = findSelectedNoteById(noteId);
         if (!note) return;
 
         note.x = parseFloat(block.style.left);
@@ -1070,13 +1259,14 @@
       block.addEventListener("pointercancel", finishDrag);
       block.addEventListener("lostpointercapture", finishDrag);
 
-      block.addEventListener("dblclick", () => {
+      block.addEventListener("dblclick", (e) => {
+        e.stopPropagation();
         startInlineEdit();
       });
 
       function startInlineEdit() {
         editing = true;
-        selectNote(noteId);
+        selectNote(noteId, pageId);
         textEl.contentEditable = "true";
         textEl.focus();
 
@@ -1092,8 +1282,10 @@
         if (!editing) return;
         editing = false;
         textEl.contentEditable = "false";
-        const note = findNoteById(noteId);
+
+        const note = findSelectedNoteById(noteId);
         if (!note) return;
+
         note.text = textEl.textContent;
         sideTextEditor.value = note.text;
         scheduleSave();
@@ -1101,7 +1293,7 @@
       }
 
       textEl.addEventListener("input", () => {
-        const note = findNoteById(noteId);
+        const note = findSelectedNoteById(noteId);
         if (!note) return;
         note.text = textEl.textContent;
         sideTextEditor.value = note.text;
@@ -1109,7 +1301,6 @@
       });
 
       textEl.addEventListener("blur", stopInlineEdit);
-
       textEl.addEventListener("keydown", (e) => {
         if (e.key === "Escape") {
           textEl.blur();
@@ -1117,14 +1308,19 @@
       });
     }
 
-    function findNoteById(noteId) {
+    function findSelectedNoteById(noteId) {
       const project = getActiveProject();
       if (!project) return null;
-      return project.notes.find(n => n.id === noteId) || null;
+
+      for (const page of project.pages) {
+        const note = page.notes.find(n => n.id === noteId);
+        if (note) return note;
+      }
+      return null;
     }
 
     function applySideEditorChanges() {
-      const note = getSelectedNote();
+      const note = findSelectedNote();
       if (!note) return;
 
       note.text = sideTextEditor.value;
@@ -1132,26 +1328,29 @@
       note.highlight = sideHighlightSelect.value;
       note.color = normalizeColor(sideColorInput.value);
 
-      renderNotes();
-      selectNote(note.id);
+      renderEditor();
+      selectNote(note.id, note.pageId);
       commitHistory();
     }
 
     function syncSideEditorLive() {
-      const note = getSelectedNote();
+      const note = findSelectedNote();
       if (!note) return;
+
       note.text = sideTextEditor.value;
       note.style = sideStyleSelect.value;
       note.highlight = sideHighlightSelect.value;
       note.color = normalizeColor(sideColorInput.value);
 
       const el = noteElements.get(note.id);
-      if (!el) return;
-      applyNoteClasses(el, note);
-      const textEl = el.querySelector(".note-text");
-      if (textEl && textEl.textContent !== note.text) {
-        textEl.textContent = note.text;
+      if (el) {
+        applyNoteClasses(el, note);
+        const textEl = el.querySelector(".note-text");
+        if (textEl && textEl.textContent !== note.text) {
+          textEl.textContent = note.text;
+        }
       }
+
       scheduleSave();
     }
 
@@ -1166,7 +1365,7 @@
     }
 
     function copySelected() {
-      const note = getSelectedNote();
+      const note = findSelectedNote();
       if (!note) return;
       pushClipboardItem(note);
       if (navigator.clipboard && window.isSecureContext) {
@@ -1175,31 +1374,37 @@
     }
 
     function cutSelected() {
-      const note = getSelectedNote();
+      const note = findSelectedNote();
       if (!note) return;
       pushClipboardItem(note);
       deleteSelectedNote();
     }
 
     function pasteLatest() {
-      const project = getActiveProject();
-      if (!project) return;
+      const page = getCurrentPage();
+      if (!page) return;
 
       if (clipboardHistory.length) {
         const latest = JSON.parse(JSON.stringify(clipboardHistory[0].payload));
         latest.id = uid("note");
-        latest.x = Math.min((latest.x || 100) + 24, page.clientWidth - 280);
-        latest.y = Math.min((latest.y || 100) + 24, page.clientHeight - 170);
-        project.notes.push(latest);
-        renderNotes();
-        selectNote(latest.id);
+        latest.pageId = page.id;
+        latest.x = Math.min((latest.x || 100) + 24, 680);
+        latest.y = Math.min((latest.y || 100) + 24, 1040);
+        page.notes.push(latest);
+        selectedNoteId = latest.id;
+        renderEditor();
         commitHistory();
         return;
       }
 
       if (navigator.clipboard && window.isSecureContext) {
         navigator.clipboard.readText().then(text => {
-          createNote({ text: text || "Pasted note", style: "body", highlight: "yellow" });
+          createNote({
+            text: text || "Pasted note",
+            style: "body",
+            highlight: "yellow",
+            color: "#272220"
+          });
         }).catch(() => {});
       }
     }
@@ -1215,6 +1420,7 @@
 
     function renderClipboardModal() {
       clipboardList.innerHTML = "";
+
       if (!clipboardHistory.length) {
         const empty = document.createElement("div");
         empty.className = "clip-item";
@@ -1235,24 +1441,26 @@
         meta.className = "clip-meta";
         meta.textContent = new Date(item.createdAt).toLocaleString();
 
-        const buttons = document.createElement("div");
-        buttons.style.display = "flex";
-        buttons.style.gap = "8px";
-        buttons.style.marginTop = "8px";
+        const actions = document.createElement("div");
+        actions.style.display = "flex";
+        actions.style.gap = "8px";
+        actions.style.marginTop = "8px";
 
         const useBtn = document.createElement("button");
         useBtn.className = "small-btn";
         useBtn.textContent = "Paste this";
         useBtn.addEventListener("click", () => {
-          const project = getActiveProject();
-          if (!project) return;
+          const page = getCurrentPage();
+          if (!page) return;
+
           const note = JSON.parse(JSON.stringify(item.payload));
           note.id = uid("note");
-          note.x = 110 + (project.notes.length * 12);
-          note.y = 100 + (project.notes.length * 12);
-          project.notes.push(note);
-          renderNotes();
-          selectNote(note.id);
+          note.pageId = page.id;
+          note.x = 110 + (page.notes.length * 12);
+          note.y = 100 + (page.notes.length * 12);
+          page.notes.push(note);
+          selectedNoteId = note.id;
+          renderEditor();
           commitHistory();
           closeClipboardModal();
         });
@@ -1266,8 +1474,8 @@
           renderClipboardModal();
         });
 
-        buttons.append(useBtn, removeBtn);
-        wrap.append(preview, meta, buttons);
+        actions.append(useBtn, removeBtn);
+        wrap.append(preview, meta, actions);
         clipboardList.appendChild(wrap);
       });
     }
@@ -1315,11 +1523,50 @@
       }
     }
 
+    function scrollToPage(pageId) {
+      const frame = pagesScroller.querySelector(`.page-frame[data-page-id="${pageId}"]`);
+      if (!frame) return;
+      frame.scrollIntoView({ behavior: "smooth", block: "start" });
+      selectedPageId = pageId;
+    }
+
+    function observeCurrentPage() {
+      const frames = [...pagesScroller.querySelectorAll(".page-frame")];
+      if (!frames.length) return;
+
+      let ticking = false;
+
+      pagesScroller.onscroll = () => {
+        if (ticking) return;
+        ticking = true;
+
+        requestAnimationFrame(() => {
+          const scrollerRect = pagesScroller.getBoundingClientRect();
+          let bestId = selectedPageId;
+          let bestDistance = Number.POSITIVE_INFINITY;
+
+          frames.forEach(frame => {
+            const rect = frame.getBoundingClientRect();
+            const distance = Math.abs(rect.top - scrollerRect.top);
+            if (distance < bestDistance) {
+              bestDistance = distance;
+              bestId = frame.dataset.pageId;
+            }
+          });
+
+          selectedPageId = bestId;
+          ticking = false;
+        });
+      };
+    }
+
+    homeBtn.addEventListener("click", showProjectsScreen);
     createProjectBtn.addEventListener("click", createProject);
+
     addNoteBtn.addEventListener("click", () => createNote());
     deleteNoteBtn.addEventListener("click", deleteSelectedNote);
-
     applyChangesBtn.addEventListener("click", applySideEditorChanges);
+    addPageBtn.addEventListener("click", createPage);
 
     sideTextEditor.addEventListener("input", syncSideEditorLive);
     sideStyleSelect.addEventListener("change", syncSideEditorLive);
@@ -1327,9 +1574,9 @@
     sideColorInput.addEventListener("input", syncSideEditorLive);
 
     sideTextEditor.addEventListener("blur", commitHistory);
-    sideColorInput.addEventListener("blur", commitHistory);
     sideStyleSelect.addEventListener("change", commitHistory);
     sideHighlightSelect.addEventListener("change", commitHistory);
+    sideColorInput.addEventListener("blur", commitHistory);
 
     undoBtn.addEventListener("click", undo);
     redoBtn.addEventListener("click", redo);
@@ -1345,21 +1592,14 @@
 
     document.addEventListener("keydown", handleGlobalShortcuts);
 
-    page.addEventListener("click", (e) => {
-      if (e.target === page) {
-        selectedNoteId = null;
-        noteElements.forEach(el => el.classList.remove("selected"));
-      }
-    });
-
     window.addEventListener("beforeunload", () => {
       clearTimeout(typingTimer);
       persistCurrentProject();
     });
 
-    ensureProject();
-    renderProjectList();
-    renderNotes();
+    ensureProjects();
+    renderProjectGrid();
+    showProjectsScreen();
     setSaveStatus("saved", "Saved");
   </script>
 </body>
